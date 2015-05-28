@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">INU</string>
+    <string name="prompt_name_user">Username</string>
+    <string name="prompt_password2">Password</string>
+    <string name="action_login">Login</string>
+    <string name="title_activity_profile">Profile</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="menu_profile1">Menu</string>
+    <string name="bienvenido">Bienvenido</string>
+    <string name="welcome">Welcome</string>
+    <string name="start_quiz">Start Quiz</string>
+    <string name="statistics">Statistics</string>
+    <string name="logout">Log Out</string>
+    <string name="action_search">Search</string>
+    <string name="title_activity_quiz">Quiz INU</string>
+    <string name="send_quiz">Send Answer</string>
+    <string name="cancel">Cancel</string>
+    <string name="no_questions">Currently are not new questions to answer. Try again later.</string>
+    <string name="no_preguntas">En el momento no hay nuevas preguntas para contestar. Trata mas tarde.</string>
+    <string name="question_number">Question number</string>
+    <string name="pregunta_numero">Pregunta número</string>
+    <string name="envio_respuesta_correcto">Tu respuesta se ha enviado con exito</string>
+    <string name="send_answer_correct">Your answer has been sended correctly</string>
+    <string name="envio_respuesta_incorrecto">Tu respuesta no se ha podido enviar correctamente. Por favor trate nuevamente</string>
+    <string name="send_answer_incorrect">Your answer has not been sended. Please try again</string>
+</resources>
