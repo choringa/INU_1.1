@@ -17,7 +17,9 @@ public class ConexionConfig extends ManejadorConexion{
     /**
      * Ubicación de despliegue y nombre del servicio (schema location)
      */
-    private final static String NOMBRE_SERVICIO = "http://190.240.3.28/INUWS/INUWS?wsdl";
+//    private final static String NOMBRE_SERVICIO = "http://190.240.3.28/INUWS/INUWS?wsdl";
+
+    private final static String NOMBRE_SERVICIO = "http://192.168.0.24:8080/INUWS/INUWS?wsdl";
 
     /**
      * Línea que permite configurar la conexión http en Android
