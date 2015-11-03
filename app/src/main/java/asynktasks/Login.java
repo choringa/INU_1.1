@@ -1,6 +1,5 @@
 package asynktasks;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
 import co.com.instrasoft.inu_11.LoginActivity;
@@ -20,7 +19,6 @@ public class Login extends AsyncTask<Void, Void, String>{
     /**
      * Atributo de dialogo de progreso.
      */
-    private ProgressDialog dialogoProgreso;
 
     /**
      * Atributos requeridos del login
@@ -49,12 +47,7 @@ public class Login extends AsyncTask<Void, Void, String>{
 
     @Override
     protected String doInBackground(Void... params) {
-        loginAct.showProgress(true);
-        System.out.println("en teoria aca entra");
-
-        String a = darUser();
-
-        return a;
+        return darUser();
     }
 
     @Override
@@ -65,14 +58,14 @@ public class Login extends AsyncTask<Void, Void, String>{
 
     @Override
     protected void onPostExecute(String result){
-        loginAct.showProgress(false);
+        loginAct.loginResponse(result);
     }
 
-
-
+    /**
+     * Verifica la autenticidad del usuario
+     * @return la respuesta del servidor
+     */
     public String darUser() {
-
-
         String verif = "";
         String[] nombres = new String[] {ConexionConfig.PARAM_USERNAME, ConexionConfig.PARAM_PASSWORD};
         String[] params = new String[] { username, password};

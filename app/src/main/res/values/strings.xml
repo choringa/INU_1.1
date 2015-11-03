@@ -25,4 +25,5 @@
     <string name="send_answer_correct">Your answer has been sended correctly</string>
     <string name="envio_respuesta_incorrecto">Tu respuesta no se ha podido enviar correctamente. Por favor trate nuevamente</string>
     <string name="send_answer_incorrect">Your answer has not been sended. Please try again</string>
+    <string name="title_activity_statistics">Statistics</string>
 </resources>

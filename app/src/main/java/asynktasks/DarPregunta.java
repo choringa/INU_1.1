@@ -53,32 +53,27 @@ public class DarPregunta extends AsyncTask<Void, Void, Question> {
 
     @Override
     protected Question doInBackground(Void... params) {
-        if(profileAct != null)
-            profileAct.showProgress(true);
-        if(quizAct != null)
-            quizAct.showProgress(true);
         return darPregunta();
     }
 
     @Override
     protected void onCancelled() {
         if(profileAct != null)
-        profileAct.showProgress(false);
+            profileAct.quitarProgressDialog();
         if(quizAct != null)
-            quizAct.showProgress(false);
+            quizAct.quitarProgressDialog();
     }
 
     @Override
     protected void onPostExecute(Question result) {
         if(profileAct != null)
-        profileAct.showProgress(false);
+            profileAct.verifStartQuiz(result);
+
         if(quizAct != null)
-            quizAct.showProgress(false);
+            quizAct.veriSiguientePregunta(result);
     }
 
     public Question darPregunta() {
-
-
         Question verif = null;
         String[] nombres = new String[] {ConexionConfig.PARAM_ID_USER, ConexionConfig.PARAM_USER_TYPE};
         String[] params = new String[] { idUser+"", type_user+""};
@@ -91,14 +86,13 @@ public class DarPregunta extends AsyncTask<Void, Void, Question> {
             String answer2 = sapo.getProperty("answer2").toString();
             String answer3 = sapo.getProperty("answer3").toString();
             String answer4 = sapo.getProperty("answer4").toString();
+            int answer = Integer.parseInt(sapo.getProperty("answer").toString());
             int question_user_type = Integer.parseInt(sapo.getProperty("user_type").toString());
-            verif = new Question(idQuestion,question,answer1,answer2,answer3,answer4,question_user_type);
+            verif = new Question(idQuestion,question,answer1,answer2,answer3,answer4,answer,question_user_type);
         }
         catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return verif;
     }
-
 }

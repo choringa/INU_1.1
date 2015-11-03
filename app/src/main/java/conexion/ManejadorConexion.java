@@ -1,5 +1,7 @@
 package conexion;
 
+import android.util.Log;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -7,6 +9,7 @@ import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by Choringa on 20/04/15.
@@ -47,6 +50,51 @@ public abstract class ManejadorConexion {
      * @return la respuesta entregada por el servicio
      * @throws Exception en caso de que no se pueda realizar la conexi�n
      */
+    public ArrayList<SoapObject> consumirServicioLista(String servicio, String[] nombreParams, String[] params) throws Exception{
+
+        ArrayList<SoapObject> resultado;
+        SoapObject soap = new SoapObject(nameSapce, servicio);
+        soap.newInstance();
+        for( int i = 0; i < nombreParams.length; i++){
+            soap.addProperty(nombreParams[i], params[i]);
+        }
+
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        envelope.setOutputSoapObject(soap);
+        System.out.println("conexionhttp: " + conexionHTTP);
+        HttpTransportSE http = new HttpTransportSE(	conexionHTTP, 15000);
+        System.out.println("consumirServicioLista1");
+        http.debug = true;
+        try {
+            System.out.println("consumirServicioLista2: " + nombreServicio);
+            http.call(nombreServicio, envelope);
+            SoapObject body = (SoapObject)envelope.bodyIn;
+            System.out.println("consumirServicioLista3 " + body.toString());
+//            SoapPrimitive resultsRequestSOAP = (SoapPrimitive)envelope.getResponse();
+            System.out.println("consumirServicioLista4");
+            resultado = procesarRespuestaLista(body);
+            for (int i = 0; i < resultado.size(); i++) {
+                Log.i("ManejadorConexion", "consumirServicioLista5--->Respuesta: " + resultado.get(i).toString());
+            }
+        } catch (IOException e) {
+            throw new Exception("Ocurrió el siguiente error de conexión: " + e.getMessage());
+        } catch (XmlPullParserException e) {
+            throw new Exception("Ocurrió el siguiente error al hacer parser de la respuesta: " + e.getMessage());
+        }
+        catch(Exception e){
+            throw new Exception("Ocurrió el siguiente error: " + e.getMessage());
+        }
+        return resultado;
+    }
+
+    /**
+     * Consume un servicio y devuelve la informaci�n entregada por este para objetos deifinidos por java es decir no byte[]
+     * @param servicio el servicio que se desea consumir
+     * @param nombreParams el nombre de los par�metros solicitados por el servicio
+     * @param params los par�metros solicitados por el servicio
+     * @return la respuesta entregada por el servicio
+     * @throws Exception en caso de que no se pueda realizar la conexi�n
+     */
     public Object consumirServicio(String servicio, String[] nombreParams, String[] params) throws Exception{
 
 
@@ -75,7 +123,7 @@ public abstract class ManejadorConexion {
             System.out.println("consumirServicio2: " + nombreServicio);
             http.call(nombreServicio, envelope);
             SoapObject body = (SoapObject)envelope.bodyIn;
-            System.out.println("consumirServicio3");
+            System.out.println("consumirServicio3 " + body.toString());
 //            SoapPrimitive resultsRequestSOAP = (SoapPrimitive)envelope.getResponse();
             System.out.println("consumirServicio4");
             resultado = procesarRespuesta2(body);
@@ -159,4 +207,6 @@ public abstract class ManejadorConexion {
      * @return la respuesta del servicio en terminos de elementos de la aplicación
      */
     public abstract  Object procesarRespuesta2(SoapObject body);
+
+    public abstract ArrayList<SoapObject>procesarRespuestaLista(SoapObject body);
 }

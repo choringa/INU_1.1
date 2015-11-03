@@ -3,6 +3,7 @@ package co.com.instrasoft.inu_11;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,8 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.concurrent.ExecutionException;
 
 import asynktasks.DarPregunta;
 import mundo.Question;
@@ -31,6 +30,8 @@ public class ProfileActivity extends ActionBarActivity {
     private View mPerfilFormView;
 
     private View mProgressView;
+
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,23 +105,34 @@ public class ProfileActivity extends ActionBarActivity {
      */
     public void startQuiz(){
         System.out.println("Inicia a pedir un nuevo quiz");
-        try {
-            showProgress(true);
-            Question pregunta = new DarPregunta(usuario.getId(), usuario.getType_user(), this, null).execute().get();
-            if(pregunta != null) {
-                Intent quizIntent = new Intent(this, QuizActivity.class);
-                quizIntent.putExtra("usuarioVerificado", usuario);
-                quizIntent.putExtra("pregunta", pregunta);
-                startActivity(quizIntent);
-            }
-            else{
-                Toast toast = Toast.makeText(this, getString(R.string.no_questions), Toast.LENGTH_LONG);
-                toast.show();
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        progressDialog =  new ProgressDialog(this);
+        progressDialog.setTitle("Please Wait");
+        progressDialog.setMessage("Retrieving quiz information");
+        progressDialog.setIndeterminate(true);
+        progressDialog.show();
+        new DarPregunta(usuario.getId(), usuario.getType_user(), this, null).execute();
+    }
+
+    /**
+     * Quita el proressDialog si se esta mostrando
+     */
+    public void quitarProgressDialog(){
+        if(progressDialog.isShowing())
+            progressDialog.dismiss();
+    }
+
+
+    public void verifStartQuiz(Question pregunta){
+        quitarProgressDialog();
+        if(pregunta != null) {
+            Intent quizIntent = new Intent(this, QuizActivity.class);
+            quizIntent.putExtra("usuarioVerificado", usuario);
+            quizIntent.putExtra("pregunta", pregunta);
+            startActivity(quizIntent);
+        }
+        else{
+            Toast toast = Toast.makeText(this, getString(R.string.no_questions), Toast.LENGTH_LONG);
+            toast.show();
         }
     }
 
@@ -128,8 +140,8 @@ public class ProfileActivity extends ActionBarActivity {
      * Metodo para ver las estadisticas del usuario
      */
     public void showStatistics(){
-        Toast toast = Toast.makeText(this, "Sorry. Not available yet.", Toast.LENGTH_LONG);
-        toast.show();
+        Intent inte = new Intent(this, StatisticsActivity.class);
+        startActivity(inte);
     }
 
     /**

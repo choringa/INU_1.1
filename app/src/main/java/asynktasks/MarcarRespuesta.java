@@ -25,7 +25,7 @@ public class MarcarRespuesta extends AsyncTask<Void, Void, Boolean>{
     /**
      * Atributos requeridos del login
      */
-    private int idQuestion, idUser, user_answer;
+    private int idQuestion, idUser, user_answer, points;
     /**
      * Atributo del contexto de donde viene
      */
@@ -36,11 +36,12 @@ public class MarcarRespuesta extends AsyncTask<Void, Void, Boolean>{
     // CONSTRUCTOR
     //-------------------
 
-    public MarcarRespuesta(QuizActivity quizAct, int idQuestion, int idUser, int user_answer){
+    public MarcarRespuesta(QuizActivity quizAct, int idQuestion, int idUser, int user_answer, int points){
         this.idQuestion = idQuestion;
         this.idUser = idUser;
         this.user_answer = user_answer;
         this.quizAct = quizAct;
+        this.points = points;
     }
 
 
@@ -56,19 +57,19 @@ public class MarcarRespuesta extends AsyncTask<Void, Void, Boolean>{
 
     @Override
     protected void onCancelled() {
-        quizAct.showProgress(false);
+        quizAct.quitarProgressDialog();
     }
 
 
     @Override
     protected void onPostExecute(Boolean result) {
-        quizAct.showProgress(false);
+        quizAct.verifMarcarRespuesta(result);
     }
 
     public boolean marcarRespuesta() {
 
-        String[] nombres = new String[] {ConexionConfig.PARAM_ID_USER, ConexionConfig.PARAM_ID_QUESTION, ConexionConfig.PARAM_USER_ANSWER};
-        String[] params = new String[] { idUser + "", idQuestion +"", user_answer +""};
+        String[] nombres = new String[] {ConexionConfig.PARAM_ID_USER, ConexionConfig.PARAM_ID_QUESTION, ConexionConfig.PARAM_USER_ANSWER, ConexionConfig.PARAM_POINTS};
+        String[] params = new String[] { idUser + "", idQuestion +"", user_answer +"", points+""};
         ManejadorConexion server = new ConexionConfig();
         try {
             return  Boolean.parseBoolean(server.consumirServicio(ConexionConfig.METHOD_MARCAR_RESPUESTA, nombres, params).toString());

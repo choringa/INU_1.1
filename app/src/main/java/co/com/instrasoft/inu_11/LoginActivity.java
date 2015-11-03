@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,7 +21,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import asynktasks.Login;
 
@@ -43,6 +43,8 @@ public class LoginActivity extends Activity{
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,28 +120,15 @@ public class LoginActivity extends Activity{
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
-            try {
-                String usuarioVerificado = new Login(this,email, password).execute().get();
-                //Si fue un error de login
-                if (usuarioVerificado.equals("error1")){
-                    mPasswordView.setError(getString(R.string.error_incorrect_password));
-                    mEmailView.setError(getString(R.string.error_incorrect_password));
-                    showProgress(false);
-                }
-                //Si no hubo errores
-                else{
-                    Intent perfilIntent = new Intent(this, ProfileActivity.class);
-                    perfilIntent.putExtra("usuarioVerificado",usuarioVerificado);
-                    showProgress(false);
-                    startActivity(perfilIntent);
-                }
+            //showProgress(true);
 
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Wait");
+            progressDialog.setMessage("Verifying information...");
+            progressDialog.setIndeterminate(true);
+            progressDialog.show();
+            new Login(this,email, password).execute();
+
 
         }
     }
@@ -148,6 +137,28 @@ public class LoginActivity extends Activity{
         //TODO: Replace this with your own logic
         return password.length() > 4;
     }
+
+    public void loginResponse(String usuario){
+        if (usuario.equals("error1")){
+            mPasswordView.setError(getString(R.string.error_incorrect_password));
+            mEmailView.setError(getString(R.string.error_incorrect_password));
+            //showProgress(false);
+        }
+        //Si no hubo errores
+        else{
+            Intent perfilIntent = new Intent(this, ProfileActivity.class);
+            perfilIntent.putExtra("usuarioVerificado",usuario);
+            //showProgress(false);
+            startActivity(perfilIntent);
+        }
+    }
+
+    public void quitarProgressDialog(){
+        if(progressDialog.isShowing())
+            progressDialog.dismiss();
+    }
+
+
 
     /**
      * Shows the progress UI and hides the login form.

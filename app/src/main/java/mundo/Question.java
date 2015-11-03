@@ -13,6 +13,7 @@ public class Question implements Serializable{
     private int idQuestion;
     private String question, answer1, answer2, answer3, answer4;
     private int user_type;
+    private int answer;
 
     /**
      * Constructor de la clase pregunta
@@ -24,19 +25,29 @@ public class Question implements Serializable{
      * @param answer4 la cuarta opcion de respuesta
      * @param user_type el tipo de usuario para el cual la pregunta esta hecha
      */
-    public Question(int idQuestion, String question, String answer1, String answer2, String answer3, String answer4, int user_type) {
+    public Question(int idQuestion, String question, String answer1, String answer2, String answer3, String answer4, int answer ,int user_type) {
         this.idQuestion = idQuestion;
         this.question = question;
         this.answer1 = answer1;
         this.answer2 = answer2;
         this.answer3 = answer3;
         this.answer4 = answer4;
+        this.answer = answer;
         this.user_type = user_type;
     }
 
     //--------------------------
     // METODOS GETTER Y SETTER
     //--------------------------
+
+
+    public int getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(int answer) {
+        this.answer = answer;
+    }
 
     public int getIdQuestion() {
         return idQuestion;

@@ -2,6 +2,8 @@ package conexion;
 
 import org.ksoap2.serialization.SoapObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by Choringa on 20/04/15.
  */
@@ -12,14 +14,12 @@ public class ConexionConfig extends ManejadorConexion{
      */
     private final static String NAME_SPACE = "http://ws/";
 
-
-
     /**
      * Ubicación de despliegue y nombre del servicio (schema location)
      */
-//    private final static String NOMBRE_SERVICIO = "http://190.240.3.28/INUWS/INUWS?wsdl";
+    private final static String NOMBRE_SERVICIO = "http://190.240.3.28/INUWS/INUWS?wsdl";
 
-    private final static String NOMBRE_SERVICIO = "http://192.168.0.24:8080/INUWS/INUWS?wsdl";
+//    private final static String NOMBRE_SERVICIO = "http://192.168.1.120:8080/INUWS/INUWS?wsdl";
 
     /**
      * Línea que permite configurar la conexión http en Android
@@ -55,6 +55,8 @@ public class ConexionConfig extends ManejadorConexion{
 
     public final static String PARAM_USER_ANSWER = "user_answer";
 
+    public final static String PARAM_POINTS = "points";
+
     //-----------------------------
     // CONSTANTES METODOS
     //-----------------------------
@@ -67,6 +69,10 @@ public class ConexionConfig extends ManejadorConexion{
     public static final String METHOD_DAR_PREGUNTA = "darPregunta";
 
     public static final String METHOD_MARCAR_RESPUESTA = "marcarRespuesta";
+
+    public static final String METHOD_DAR_USUARIOS_PUNTAJE = "darUsuariosPuntaje";
+
+    public static final String METHOD_DAR_PUNTAJE = "darPuntaje";
 
 
     //-------------------
@@ -101,6 +107,14 @@ public class ConexionConfig extends ManejadorConexion{
     @Override
     public String procesarRespuesta2(SoapObject body) {
         return body.getProperty(0).toString();
+    }
+
+    public ArrayList<SoapObject> procesarRespuestaLista(SoapObject body){
+        ArrayList<SoapObject> resp = new ArrayList<>();
+        for (int i = 0; i < body.getPropertyCount(); i++) {
+            resp.add((SoapObject)body.getProperty(i));
+        }
+        return resp;
     }
 
 }

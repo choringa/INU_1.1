@@ -13,16 +13,24 @@
         android:id="@+id/progreso_quiz"
         android:visibility="gone" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/tvPoints"
+        android:textSize="30px"
+        android:textColor="@color/morado_gay" />
+
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/quizFormView"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" >
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/tvPoints">
 
         <LinearLayout
             android:orientation="vertical"
@@ -38,24 +46,18 @@
                 android:gravity="center_horizontal"
                 android:layout_marginBottom="5dp" />
 
-            <ScrollView
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:id="@+id/scrollView"
-                android:layout_marginBottom="6dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="77dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Medium Text"
-                    android:id="@+id/textoPreguntaPregunta" />
-            </ScrollView>
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Medium Text"
+                android:id="@+id/textoPreguntaPregunta" />
 
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/radioGroupRespuestas">
+                android:id="@+id/radioGroupRespuestas"
+                android:layout_marginTop="30px">
 
                 <RadioButton
                     android:layout_width="wrap_content"
@@ -91,6 +93,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/send_quiz"
                 android:id="@+id/btnEnviarRespuesta" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Next Question"
+                android:id="@+id/btnNextQuestion" />
 
             <Button
                 android:layout_width="match_parent"
