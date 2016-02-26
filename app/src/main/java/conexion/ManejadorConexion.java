@@ -130,6 +130,7 @@ public abstract class ManejadorConexion {
             System.out.println("consumirServicio5->RESPUESTA: "+resultado);
         } catch (IOException e) {
             throw new Exception("Ocurrió el siguiente error de conexión: " + e.getMessage());
+
         } catch (XmlPullParserException e) {
             throw new Exception("Ocurrió el siguiente error al hacer parser de la respuesta: " + e.getMessage());
         }

@@ -8,19 +8,16 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import java.util.List;
+import android.widget.Toast;
 
 import asynktasks.Login;
 
@@ -75,7 +72,7 @@ public class LoginActivity extends Activity{
         });
 
         mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        //mProgressView = findViewById(R.id.login_progress);
     }
 
 
@@ -146,10 +143,18 @@ public class LoginActivity extends Activity{
         }
         //Si no hubo errores
         else{
-            Intent perfilIntent = new Intent(this, ProfileActivity.class);
-            perfilIntent.putExtra("usuarioVerificado",usuario);
-            //showProgress(false);
-            startActivity(perfilIntent);
+            if(usuario.length() > 0) {
+                Intent perfilIntent = new Intent(this, ProfileActivity.class);
+                perfilIntent.putExtra("usuarioVerificado", usuario);
+                //showProgress(false);
+                if(progressDialog.isShowing())
+                    progressDialog.dismiss();
+                startActivity(perfilIntent);
+            }
+            else{
+                Toast tostada = Toast.makeText(this, "Ocurrio un error consumiendo el servicio, trata de nuevo", Toast.LENGTH_LONG);
+                tostada.show();
+            }
         }
     }
 
@@ -196,24 +201,5 @@ public class LoginActivity extends Activity{
         }
     }
 
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
-
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
-    }
 }
 
